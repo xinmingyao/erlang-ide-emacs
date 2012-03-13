@@ -1,0 +1,62 @@
+From 7eff7b0b39e2abec4e54ef1f132528c2c0635008 Mon Sep 17 00:00:00 2001
+From: Ralf Doering <rdoering@netsys-it.de>
+Date: Tue, 12 Oct 2010 10:11:27 +0200
+Subject: [PATCH] epmd.el: Make it work with R14B
+
+empd dropped "old" protocols with 6499bf (see
+http://github.com/erlang/otp/commit/6499bf2816c3834059ebdeff75d98f310cb305b4).
+
+This means PORT_REQ is no longer available. This was used
+by distel to check if a node is alive. This commit adds some rough
+support to use PORT2_REQ/PORT2_RESP instead, as documented in
+http://www.erlang.org/doc/apps/erts/erl_dist_protocol.html#id83703.
+
+Signed-off-by: Ralf Doering <rdoering@netsys-it.de>
+---
+ elisp/epmd.el |   14 +++++++++-----
+ 1 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/elisp/epmd.el b/elisp/epmd.el
+index 13a00f2..d27a958 100644
+--- a/elisp/epmd.el
++++ b/elisp/epmd.el
+@@ -16,7 +16,7 @@
+ 			     arg)))
+   (ecase (elt arg 0)
+     ((?n) (fsm-change-state #'epmd-recv-names-resp))
+-    ((?p) (fsm-change-state #'epmd-recv-port-resp))
++    ((?z) (fsm-change-state #'epmd-recv-port-resp))
+     ((?a) (fsm-change-state #'epmd-recv-alive-resp))))
+ 
+ (defun epmd-recv-names-resp (event data)
+@@ -25,11 +25,15 @@
+   (fsm-terminate (substring arg 4)))
+ 
+ (defun epmd-recv-port-resp (event data)
++  (message "Event: %s" event)
++  (message "data: %s" data)
++  (message "arg: %s" arg)
+   (ecase event
+     ((data)
+-     (assert (= (length arg) 2))
+-     (fsm-terminate (+ (ash    (elt arg 0) 8)
+-		       (logand (elt arg 1) 255))))
++     (assert (> (length arg) 2))
++     (assert (= 119 (elt data 0)))
++     (fsm-terminate (+ (ash    (elt arg 2) 8)
++		       (logand (elt arg 3) 255))))
+     ((closed)
+      (fsm-fail))))
+ 
+@@ -74,7 +78,7 @@
+ 	(fsm-connect host epmd-port #'epmd-process "n" cont fail)))))
+ 
+ (defun epmd-port-please (node host cont &optional fail-cont)
+-  (fsm-connect host epmd-port #'epmd-process (concat "p" node) cont fail-cont))
++  (fsm-connect host epmd-port #'epmd-process (concat "z" node) cont fail-cont))
+ 
+ ;; (defun epmd-login (nodename &optional cont fail-cont)
+ ;;   (fsm-connect host epmd-port #'epmd-process (epmd-make-alive-req nodename)
+-- 
+1.7.3.15.g442cb
+

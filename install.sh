@@ -1,11 +1,14 @@
-base_dir= 'pwd'
+base_dir=`pwd`
 echo $base_dir
-cd elsip
-git git@github.com:xinmingyao/erlang-emacs-extend.git
+cd elisp
+rm -rf erlang-emacs-extend
+git clone http://github.com/xinmingyao/erlang-emacs-extend.git
 cd erlang-emacs-extend 
 ./rebar compile
 cd $base_dir
-cd common/distel
+
+echo `pwd` 
+cd elisp/distel/
 mkdir ebin
 make install
 cd $base_dir

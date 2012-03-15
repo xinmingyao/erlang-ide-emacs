@@ -167,6 +167,7 @@
     scheme-mode
     graphviz-dot-mode
     erlang-mode
+    erlang-shell-mode
     ocaml-mode tuareg-mode
     perl-mode cperl-mode python-mode ruby-mode
     ecmascript-mode javascript-mode js-mode js2-mode php-mode css-mode

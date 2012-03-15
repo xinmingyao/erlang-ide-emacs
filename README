@@ -1,0 +1,51 @@
+Emacs as erlang ide
+	erlang-mode
+	distel
+	flymake
+	auto-complete
+	tabbar
+	sr-speedbar
+	yasnippet
+	color-theme
+
+ add:  
+ autocomplete support for 
+		module fun
+  		macros
+		record
+ common test support
+	    
+
+
+ todo:
+	eunit support
+
+
+
+install:
+	./install.sh
+	###pls backup your ~/.emacs
+        cd ~/elisp/erlang-emacs-extend
+	emacs test/extend_ct_tool_SUITE.erl
+	move cursor to  e1(_Config)
+	C-c e   
+	##will run a common test case in current line,if error, goto the error line
+
+
+other:
+ 
+be sure your erlang path is (/usr/local/lib/erlang),otherwise
+pls modify ~/.emacs and replace your path
+ 
+your erlang project organization:
+	
+your_project/
+	src
+	ebin
+	test
+	include
+	deps
+	....... 
+
+erlang otp should be r15 or above  for error line no in trackstack
+  

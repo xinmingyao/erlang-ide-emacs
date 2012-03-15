@@ -164,9 +164,12 @@ guess_source_file(Mod, BeamFName) ->
   Erl = to_list(Mod) ++ ".erl",
   Dir = dirname(BeamFName),
   DotDot = dirname(Dir),
-  try_srcs([src_from_beam(Mod),
-            join([Dir, Erl]),
+  try_srcs([
             join([DotDot, "src", Erl]),
+	    join([Dir, Erl]),
+
+	    src_from_beam(Mod),
+            
             join([DotDot, "src", "*", Erl]),
             join([DotDot, "esrc", Erl]),
             join([DotDot, "erl", Erl])]).

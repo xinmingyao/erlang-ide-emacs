@@ -1,4 +1,8 @@
-Emacs as erlang ide
+Overview
+This project is a tool to integration some erlang plugin for Emacs.
+code review,error check,auto complete,erlang debug,erlang common test &&.
+
+Plugin include:
 	erlang-mode
 	distel
 	flymake

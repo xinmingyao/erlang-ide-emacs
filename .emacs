@@ -25,9 +25,6 @@
 ;;setq load-path (cons "~/elisp/esense-1.12" load-path))
 (setq load-path (cons "~/elisp" load-path))
 ;; This is needed for Erlang mode setup
-(setq erlang-root-dir "/usr/local/lib/erlang")
-(setq load-path (cons "/usr/local/lib/erlang/lib/tools-2.6.6.2/emacs" load-path))
-(setq exec-path (cons "/usr/local/lib/erlang/bin" exec-path))
 (require 'erlang-start)
 ;; This is needed for Distel setup
 (let ((distel-dir "~/elisp/distel/elisp"))

@@ -239,11 +239,24 @@ buffer."
   (with-current-buffer (process-buffer socket)
     (fsm-event 'closed event)))
 
+(defun process-kill-buffer-query-function1 ()
+  "Ask before killing a buffer that has a running process."
+  (let ((process (get-buffer-process (current-buffer))))
+    (or (not process)
+        (not (memq (process-status process) '(run stop open listen)))
+        (not (process-query-on-exit-flag process))
+        )))
+
 (defun fsm-shutdown ()
   (setq fsm-state nil)
   (when fsm-process
-    (set-process-sentinel fsm-process nil)
-    (kill-buffer (process-buffer fsm-process))))
+    (progn
+      (add-hook 'kill-buffer-query-functions 'process-kill-buffer-query-function1)
+      (set-process-sentinel fsm-process nil)
+      (kill-buffer (process-buffer fsm-process))
+      (add-hook 'kill-buffer-query-functions 'process-kill-buffer-query-function1)
+      )
+    ))
 
 (defun assert-fsm-invariants ()
   (assert fsm-buffer-p)

@@ -171,6 +171,7 @@ guess_source_file(Mod, BeamFName) ->
 	    src_from_beam(Mod),
             
             join([DotDot, "src", "*", Erl]),
+            join([DotDot, "test", "*", Erl]),
             join([DotDot, "esrc", Erl]),
             join([DotDot, "erl", Erl])]).
 

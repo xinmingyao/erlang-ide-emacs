@@ -11,7 +11,7 @@ $(eval "sed -i '1 i\ $p4' .emacs")
 $(eval "sed -i '1 i\ $p5' .emacs")
 cd elisp
 rm -rf erlang-emacs-extend
-git clone http://github.com/xinmingyao/erlang-emacs-extend.git
+git clone https://github.com/xinmingyao/erlang-emacs-extend.git
 cd erlang-emacs-extend 
 ./rebar compile
 ./rebar ct
